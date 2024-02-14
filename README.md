@@ -1,36 +1,74 @@
-# Course Management System
-You are asked to design a course management system. This system will help the faculty manage many courses, along with the enrolled students in each of the courses, and track their assignments.
+# Course Management System Design Document
 
-## Requirements
-This assessment has to be done in Python language.
+## Overview
 
-You will find a service interface at `app/course_service.py`, please implement this service interface in file `app/course_service_impl.py`. All of the methods that are annotated by `@abstractmethod` must be implemented. The method comments would give you some basic clues about what these methods are expected to do.
+This document outlines design for a Course Management System focused on managing courses, students, assignments, and grades using in-memory data structures, without external persistence or a frontend interface.
 
-Here are more details and requirements about this assessment:
-- The system will manage courses:
-  - Each course would have a name
-  - Each course could have an unlimited number of assignments
-- The system will be able to enroll students into courses:
-  - Each student could enroll an unlimited number of courses
-- The grade of a student's assignment will be an interger from 0 to 100, inclusive
-- Feel free to add any new files to the project as you need them
-- ***For simplicity, please do not use any external persistence for this assessment. Please choose the proper memory-based data structures you see fit for any data persistence need***
-- Please also include unit tests to make sure your implementation is testable
-- Please feel free to ask any clarification questions
 
-## Evaluation
-The evaluation of this assessment will be mainly focusing on:
-- Software architectural design
-- Correctness of the solution (whether it meets the requirements)
-- Maintainability of the code
-- Readability of the code
 
-In order to achieve excellence in these criteria, you can make reasonable assumptions,
-or just ask us for any clarification questions.
+### Data Structures
 
-## Submission
-Please clone this repo and finish your implementation based on the requirements.
+- **Dictionaries and Lists**: Python dictionaries and lists are used to store and manage data regarding users, courses, enrollments, assignments, and grades.
 
-You can submit your assessment by either way:
-- Create a public GitHub repository and send us the URL for it
-- Zip your solution and email it back to us
+
+
+### Project Structure
+
+`course-design-assessment/
+├── main.py
+├── app/                  # Application code
+│   ├── course_service.py         # Interface definition
+│   ├── course_service_impl.py    # Implementation of the interface
+│   └── models.py                 # Data models
+│
+└── tests/                # Unit tests
+    └── test_course_service_impl.py`
+
+
+
+### Running Tests
+
+From the root directory (`course-design-assessment-main/`), execute all unit tests by running:
+
+`python -m unittest discover -s tests`
+
+
+
+### Models.py
+
+#### Course Class
+
+- **Purpose**: Represents a course with a unique ID, name, assignments, and enrolled students.
+- **Attributes**:
+  - `course_id`: A unique identifier for the course.
+  - `course_name`: The name of the course.
+  - `assignments`: A dictionary to store assignments by assignment ID.
+  - `enrolled_students`: A dictionary to keep track of students enrolled in the course by student ID.
+- **Methods**:
+  - `add_assignment(assignment_name)`: Adds a new assignment to the course.
+  - `enroll_student(student)`: Enrolls a student in the course.
+  - `submit_assignment(student_id, assignment_id, grade)`: Records a grade for a student's assignment submission.
+  - `get_assignment_average(assignment_id)`: Calculates the average grade for an assignment across all submissions.
+
+#### Student Class
+
+- **Purpose**: Represents a student with a unique ID and their enrollments and assignments.
+- **Attributes**:
+  - `student_id`: A unique identifier for the student.
+  - `enrolled_courses`: A dictionary to store courses the student is enrolled in by course ID.
+  - `assignments`: A nested dictionary to keep track of grades for assignments in each course.
+- **Methods**:
+  - `enroll_in_course(course)`: Enrolls the student in a given course.
+  - `submit_assignment(course_id, assignment_id, grade)`: Submits a grade for an assignment in a course.
+  - `get_average_grade(course_id)`: Calculates the student's average grade across all assignments in a course.
+
+
+
+### CourseServiceImpl.py
+
+#### Class Variables
+
+- **`courses`**: A dictionary to store `Course` objects by their course ID. 
+- **`students`**: A dictionary to store `Student` objects by their student ID. 
+- **`next_course_id`**: An integer used to generate unique IDs for new courses.
+- **`next_student_id`**: An integer used to generate unique IDs for new students.
