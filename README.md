@@ -14,15 +14,18 @@ This document outlines design for a Course Management System focused on managing
 
 ### Project Structure
 
-`course-design-assessment/
+```
+course-design-assessment/
 ├── main.py
+│
 ├── app/                  # Application code
 │   ├── course_service.py         # Interface definition
 │   ├── course_service_impl.py    # Implementation of the interface
 │   └── models.py                 # Data models
 │
 └── tests/                # Unit tests
-    └── test_course_service_impl.py`
+    └── test_course_service_impl.py
+```
 
 
 
@@ -30,7 +33,9 @@ This document outlines design for a Course Management System focused on managing
 
 From the root directory (`course-design-assessment-main/`), execute all unit tests by running:
 
-`python -m unittest discover -s tests`
+```
+python -m unittest discover -s tests
+```
 
 
 
